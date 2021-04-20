@@ -3,44 +3,106 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using sampleApu.EmployeeData;
+using sampleApu.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace sampleApu.Controllers
 {
-    [Route("api/[controller]")]
-    public class EmployeeController : Controller
+   
+    [ApiController]
+    public class EmployeesController : Controller
     {
-        // GET: api/values
+
+        private IEmployeeInterface _employeeInterface;
+
+        public EmployeesController(IEmployeeInterface employeeInfercase) {
+            _employeeInterface = employeeInfercase;
+        }
+
+
+        /**
+         *  Get employees
+         */
+       [HttpGet]
+        [Route("api/[controller]")]
+        public IActionResult GetEmployees()
+        {
+            return Ok( _employeeInterface.GetEmployees());
+        }
+
+
+        /**
+       *  Get single employee
+       */
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("api/[controller]/{id}")]
+        public IActionResult GetEmployee(Guid id)
         {
-            return new string[] { "value1", "value2" };
+            var employee = _employeeInterface.GetEmployee(id);
+
+            if(employee != null)
+            {
+                return Ok(employee);
+            }
+
+            return NotFound($"the id {id} you are trying to call does not exist");
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/values
+        /**
+       *  store an employee
+       */
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("api/[controller]")]
+        public IActionResult PostEmployee(Models.Employee employee)
         {
+            _employeeInterface.AddEmployee(employee);
+
+            return Created(HttpContext.Request.Scheme + "//" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.id, employee);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+
+        /**
+       *  delete an employee
+       */
+        [HttpDelete]
+        [Route("api/[controller]/{id}")]
+        public IActionResult DeleteEmployee( Guid id)
         {
+            var employee = _employeeInterface.GetEmployee(id);
+
+            if (employee != null)
+            {
+                _employeeInterface.DeleteEmployee(employee); 
+                return Ok(); 
+            }
+
+            return NotFound();
+           
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+
+        /**
+       *  update employee
+       */
+        [HttpPut]
+        [Route("api/[controller]/{id}")]
+        public IActionResult UpdateEmployee(Guid id, Employee employee)
+        { 
+            var existingEmployee = _employeeInterface.GetEmployee(id);
+
+            if (employee != null)
+            {
+                 _employeeInterface.UpdateEmployee(id, employee);
+
+                return NoContent(); 
+            }
+
+            return NotFound(); 
         }
+
+
     }
 }

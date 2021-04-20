@@ -1,10 +1,19 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 namespace sampleApu.Models
 {
-    public class EmployeeContext
+    public class EmployeeContext : DbContext
     {
-        public EmployeeContext()
+
+        // Dbset database properties  
+        public DbSet<Employee> Employees { get; set; }
+
+
+        // create a contructure
+        public EmployeeContext(DbContextOptions<EmployeeContext> options) : base(options)
         {
         }
+
+      
     }
 }
