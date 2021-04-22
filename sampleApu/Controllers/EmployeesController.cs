@@ -15,10 +15,10 @@ namespace sampleApu.Controllers
     public class EmployeesController : Controller
     {
 
-        private IEmployeeInterface _employeeInterface;
+        private IEmployeeRespository _employeeInterface;
 
-        public EmployeesController(IEmployeeInterface employeeInfercase) {
-            _employeeInterface = employeeInfercase;
+        public EmployeesController(IEmployeeRespository employeeRepository) {
+            _employeeInterface = employeeRepository;
         }
 
 
@@ -75,7 +75,7 @@ namespace sampleApu.Controllers
 
             if (employee != null)
             {
-                _employeeInterface.DeleteEmployee(employee); 
+                _employeeInterface.DeleteEmployee( id, employee); 
                 return Ok(); 
             }
 

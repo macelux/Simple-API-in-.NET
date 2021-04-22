@@ -30,9 +30,11 @@ namespace sampleApu
         {
             services.AddControllers();
 
+            // DB context configuration 
             services.AddDbContextPool<EmployeeContext>(options => options.UseSqlite("Data Source=database.db"));
 
-            services.AddScoped<IEmployeeInterface, SqlEmployeeData>();
+            // bind the interface to the repository 
+            services.AddScoped<IEmployeeRespository, EmployeeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

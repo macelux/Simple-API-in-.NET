@@ -5,7 +5,7 @@ using sampleApu.Models;
 
 namespace sampleApu.EmployeeData
 {
-    public class MockEmployeeData : IEmployeeInterface
+    public class MockEmployeeData : IEmployeeRespository
     {
         private List<Employee> employees = new List<Employee>()
         {
@@ -31,7 +31,7 @@ namespace sampleApu.EmployeeData
             return employee; 
         }
 
-        public void DeleteEmployee(Employee employee)
+        public void DeleteEmployee(Guid id, Employee employee)
         { 
             employees.Remove(employee); 
         }

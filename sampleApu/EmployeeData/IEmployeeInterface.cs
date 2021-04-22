@@ -4,7 +4,7 @@ using sampleApu.Models;
 
 namespace sampleApu.EmployeeData
 {
-    public interface IEmployeeInterface
+    public interface IEmployeeRespository
     {
         List<Employee> GetEmployees();
 
@@ -12,7 +12,7 @@ namespace sampleApu.EmployeeData
 
         Employee AddEmployee(Employee employee);
 
-        void DeleteEmployee(Employee employee);
+        void DeleteEmployee(Guid id, Employee employee);
 
         string UpdateEmployee(Guid id , Employee employee); 
 
